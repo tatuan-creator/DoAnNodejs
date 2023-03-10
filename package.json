@@ -1,0 +1,15 @@
+{
+  "name": "nodejs_qldientu",
+  "version": "1.0.0",
+  "description": "",
+  "main": "DataConnect.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Liam",
+  "license": "ISC",
+  "dependencies": {
+    "mongodb": "^5.1.0",
+    "mongoose": "^7.0.1"
+  }
+}
