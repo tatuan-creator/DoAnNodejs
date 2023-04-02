@@ -2,7 +2,7 @@ const { ObjectId } = require('mongodb');
 const config = require("../../config/setting.json");
 class CategoryService{
     databaseConnection = require('../database/database');
-    category = require('../model/category');
+    Category = require('../model/category');
 
 
     client;

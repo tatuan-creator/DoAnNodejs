@@ -2,7 +2,7 @@ const { ObjectId } = require('mongodb');
 const config = require("../../config/setting.json");
 class RoleService{
     databaseConnection = require('../database/database');
-    role = require('../model/role');
+    Role = require('../model/role');
 
 
     client;
