@@ -1,39 +1,39 @@
-var express = require("express");
+const express = require("express");
 const { ObjectId } = require("mongodb");
-var router = express.Router();
-var Brand = require("../model/brand");
-var BrandService = require("../services/brandService");
+const router = express.Router();
+const Brand = require("../../model/brand");
+const BrandService = require("../../services/brandService");
 
 
 router.get("/", async function(req,res){
-    var brandService = new BrandService();
-    var brand =  await brandService.getBrandList();
+    const brandService = new BrandService();
+    const brand =  await brandService.getBrandList();
     res.json(brand);
 });
 
 router.get("/get-brand", async function(req,res){
-    var brandService = new BrandService();
-    var brand =  await brandService.getBrand(req.query.id);
+    const brandService = new BrandService();
+    const brand =  await brandService.getBrand(req.query.id);
     res.json(brand);
 });
 
 
 router.post("/insert-brand", async function(req,res){
-    var brandService = new BrandService();
-    var temp = new Brand();
+    const brandService = new BrandService();
+    const temp = new Brand();
 
     temp.name = req.body.name;
     temp.image = req.body.image;
     temp.status = true;
 
-    var result =  await brandService.insertBrand(temp);
+    const result =  await brandService.insertBrand(temp);
     res.json({status: true, message:""});
 });
 
 
 router.post("/update-brand", async function(req,res){
-    var brandService = new BrandService();
-    var temp = new Brand();
+    const brandService = new BrandService();
+    const temp = new Brand();
     
     temp._id = new ObjectId(req.body.id);
     temp.name = req.body.name;
@@ -46,7 +46,7 @@ router.post("/update-brand", async function(req,res){
 
 
 router.delete("/delete-brand", async function(req,res){
-    var brandService = new BrandService();
+    const brandService = new BrandService();
     await  brandService.deleteBrand(req.query.id);
     res.json({status: true, message:""});
 });

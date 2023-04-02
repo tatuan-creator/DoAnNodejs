@@ -1,5 +1,5 @@
 const { ObjectId } = require('mongodb');
-var config = require("../../config/setting.json");
+const config = require("../../config/setting.json");
 class CategoryService{
     databaseConnection = require('../database/database');
     category = require('../model/category');
