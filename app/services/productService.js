@@ -24,20 +24,28 @@ class ProductService {
         return await this.productCollection.updateOne({ "_id": new ObjectId(product._id) }, { $set: product });
     }
 
-    async insertProduct(product, images) {
-        const productResult = await productCollection.insertOne(product);
-        // Thêm ảnh cho sản phẩm
-        for (let i = 0; i < images.length; i++) {
-          const productImage = new ProductImage();
-          productImage.productId = productResult.insertedId;
-          productImage.image = images[i];
-          productImage.sortOrder = i + 1;
-          await productImageCollection.insertOne(productImage);
+    async insertProduct(product, productImageList){
+        const session = await this.client.startSession();
+        session.startTransaction();
+        try {
+            const insertedProduct = await this.productCollection.insertOne(product, { session });
+    
+            const productImages = productImageList.map((image) => {
+                image.productId = insertedProduct.insertedId;
+                return image;
+            });
+            const insertedProductImages = await this.productImageCollection.insertMany(productImages, { session });
+    
+            await session.commitTransaction();
+            session.endSession();
+    
+            return insertedProduct.insertedId;
+        } catch (error) {
+            await session.abortTransaction();
+            session.endSession();
+            throw error;
         }
-      
-        return productResult;
     }
-      
 
     async getProduct(id) {
         return await this.productCollection.findOne({ "_id": new ObjectId(id) }, {});

@@ -1,9 +1,9 @@
 const express = require("express");
 const { ObjectId } = require("mongodb");
 const router = express.Router();
-const ProductService = require("../services/productService");
-const Product = require("../model/product-related-models/product");
-
+const ProductService = require("../../services/productService");
+const Product = require("../../model/product-related-models/product");
+const ProductImage = require("../../model/product-related-models/productImage");
 // Lấy danh sách sản phẩm
 router.get("/", async (req, res) => {
     const productService = new ProductService();
@@ -22,6 +22,7 @@ router.get("/get-product", async (req, res) => {
 router.post("/insert-product", async (req, res) => {
     const productService = new ProductService();
     const temp = new Product();
+    const productImageList = [];
 
     // Lấy thông tin sản phẩm từ body của request
     temp.categoryId = req.body.categoryId;
@@ -38,9 +39,14 @@ router.post("/insert-product", async (req, res) => {
     temp.totalEvaluate = 0;
 
     // Lấy danh sách ảnh từ body của request
-    const images = req.body.images;
+    for (const item of req.body.images) {
+        const productImage = new ProductImage();
+        productImage.image = item.image;
+        productImage.sortOrder = item.sortOrder;
+        productImageList.push(productImage);
+    }
 
-    const result = await productService.insertProduct(temp, images);
+    const result = await productService.insertProduct(temp, productImageList);
     res.json({ status: true, message: "" });
 });
 

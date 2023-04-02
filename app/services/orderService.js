@@ -9,10 +9,12 @@ class OrderService{
     client;
     orderDatabase;
     orderCollection;
+    orderDetailCollection;
     constructor(){
         this.client = this.databaseConnection.getMongoClient();
         this.orderDatabase =  this.client.db(config.mongodb.database);
         this.orderCollection = this.orderDatabase.collection("order");
+        this.orderDetailCollection = this.orderDatabase.collection("orderDetail");
     }
     async deleteOrder(id){
         return await this.orderCollection.deleteOne({"_id": new ObjectId(id) });
@@ -24,13 +26,13 @@ class OrderService{
         const session = await this.client.startSession();
         session.startTransaction();
         try {
-            const insertedOrder = await orderCollection.insertOne(order, { session });
+            const insertedOrder = await this.orderCollection.insertOne(order, { session });
     
             const orderDetails = orderDetailList.map((detail) => {
                 detail.orderId = insertedOrder.insertedId;
                 return detail;
             });
-            const insertedOrderDetails = await orderDetailCollection.insertMany(orderDetails, { session });
+            const insertedOrderDetails = await this.orderDetailCollection.insertMany(orderDetails, { session });
     
             await session.commitTransaction();
             session.endSession();

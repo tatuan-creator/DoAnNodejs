@@ -1,8 +1,8 @@
 const express = require("express");
 const { ObjectId } = require("mongodb");
 const router = express.Router();
-const Category = require("../model/category");
-const CategoryService = require("../services/categoryService");
+const Category = require("../../model/category");
+const CategoryService = require("../../services/categoryService");
 
 
 router.get("/", async function(req,res){
