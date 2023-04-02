@@ -1,5 +1,5 @@
 const { ObjectId } = require('mongodb');
-var config = require("../../config/setting.json");
+const config = require("../../config/setting.json");
 class UserService{
     databaseConnection = require('../database/database');
     user = require('../model/user');
