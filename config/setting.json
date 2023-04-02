@@ -1,0 +1,11 @@
+{
+    "mongodb":{
+        "username": "tuanaht2001",
+        "password": "tuanaht2001",
+        "database":"dbftshop"
+    },
+    "jwt": {
+        "secret":"goK!pusp6ThEdURUtRenOwUhAsWUCLheBazl!uJLPlS8EbreWLdrupIwabRAsiBu"
+       }
+    
+}
