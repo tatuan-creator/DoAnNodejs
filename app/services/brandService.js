@@ -2,7 +2,7 @@ const { ObjectId } = require('mongodb');
 const config = require("../../config/setting.json");
 class BrandService{
     databaseConnection = require('../database/database');
-    brand = require('../model/brand');
+    Brand = require('../model/brand');
 
 
     client;

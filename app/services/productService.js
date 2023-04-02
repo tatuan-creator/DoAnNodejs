@@ -3,16 +3,17 @@ const config = require("../../config/setting.json");
 
 class ProductService {
     databaseConnection = require('../database/database');
-    product = require('../model/product-related-models/product');
-
+    Product = require('../model/product-related-models/product');
+    ProductImage = require('../model/product-related-models/productImage');
     client;
     productDatabase;
     productCollection;
-
+    productImageCollection;
     constructor() {
         this.client = this.databaseConnection.getMongoClient();
         this.productDatabase = this.client.db(config.mongodb.database);
         this.productCollection = this.productDatabase.collection("product");
+        this.productImageCollection = this.productDatabase.collection("productImage");
     }
 
     async deleteProduct(id) {
@@ -24,11 +25,8 @@ class ProductService {
     }
 
     async insertProduct(product, images) {
-        const productCollection = this.productDatabase.collection("product");
         const productResult = await productCollection.insertOne(product);
-      
         // Thêm ảnh cho sản phẩm
-        const productImageCollection = this.productDatabase.collection("productImage");
         for (let i = 0; i < images.length; i++) {
           const productImage = new ProductImage();
           productImage.productId = productResult.insertedId;
