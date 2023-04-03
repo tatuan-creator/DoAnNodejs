@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const { ObjectId } = require('mongodb');
 const saltRounds = 10;
 
 const userSchema = new mongoose.Schema({
@@ -29,9 +30,23 @@ const userSchema = new mongoose.Schema({
         type: String,
         enum: ['admin', 'user'],
         default: 'user'
-    }
+    },
+    isBlocked: {
+        type: Boolean,
+        default: false,
+    },
+    cart: {
+        type: Array,
+        default: [],
+    },
+    address:[{type: mongoose.Schema.Types.ObjectId, ref: "Address"}],
+    wishlist:[{type: mongoose.Schema.Types.ObjectId, ref: "Product"}],
+    refreshToken: {
+        type: String,
+    },
+},{
+    timestamps : true,
 });
-
 userSchema.pre("save", async function (next) {
     if (!this.isModified("password")) {
       next();
