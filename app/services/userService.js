@@ -29,5 +29,8 @@ class UserService{
         const cursor = await this.userCollection.find({}, {}).skip(0).limit(100);
         return await cursor.toArray();
     }
+    async getUserByEmail(email) {
+        return await this.userCollection.findOne({ email });
+    }
 }
 module.exports = UserService;

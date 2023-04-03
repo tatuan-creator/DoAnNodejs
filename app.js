@@ -1,14 +1,22 @@
 const express = require("express");
-const morgan = require("morgan");
 const app = express();
-app.use(morgan('combined'));
+const connectDB = require("./config/connectDB");
+const { notFound, errorHandler } = require("./middlewares/errorHandler");
+const route = require(__dirname + "/app/routers");
+require('dotenv').config();
+
 app.use(express.json());
-
-const controller = require(__dirname + "/app/controllers");
-app.use(controller);
-
+app.use(
+    express.urlencoded({
+        extended: true,
+    }),
+);
 app.use("/public", express.static(__dirname + "/public"));
- 
+route(app);
+app.use(notFound);
+app.use(errorHandler);
+
+connectDB();
 const server = app.listen(3000, function(){
-    console.log("Server is running at port 3000");
+console.log("Server is running at port 3000");
 });
