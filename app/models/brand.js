@@ -1,11 +1,19 @@
-class Brand{
-    _id;
-    name;
-    image;
-    status;
+const mongoose = require("mongoose"); // Erase if already required
 
-    constructor(){
+// Declare the Schema of the Mongo model
+var brandSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+      unique: true,
+      index: true,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
-    }
-}
-module.exports = Brand;
+//Export the model
+module.exports = mongoose.model("Brand", brandSchema);
