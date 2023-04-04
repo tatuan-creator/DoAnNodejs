@@ -1,12 +1,19 @@
-class Category{
-    _id;
-    parentId;
-    name;
-    sortOrder;
-    status;
+const mongoose = require("mongoose"); // Erase if already required
 
-    constructor(){
+// Declare the Schema of the Mongo model
+var categorySchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+      unique: true,
+      index: true,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
-    }
-}
-module.exports = Category;
+//Export the model
+module.exports = mongoose.model("Category", categorySchema);
