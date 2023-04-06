@@ -1,10 +1,10 @@
 const express = require("express");
 const {
-  createBrand,
-  updateBrand,
-  deleteBrand,
-  getBrand,
-  getAllBrand,
+    createBrand,
+    updateBrand,
+    deleteBrand,
+    getBrand,
+    getAllBrand,
 } = require("../controllers/brandcontroller");
 const { authMiddleware, isAdmin } = require("../../middlewares/authMiddleware");
 const router = express.Router();
