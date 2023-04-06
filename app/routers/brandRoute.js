@@ -6,7 +6,7 @@ const {
   getBrand,
   getAllBrand,
 } = require("../controllers/brandcontroller");
-const { authMiddleware, isAdmin } = require("../middlewares/authMiddleware");
+const { authMiddleware, isAdmin } = require("../../middlewares/authMiddleware");
 const router = express.Router();
 
 router.post("/", authMiddleware, isAdmin, createBrand);
