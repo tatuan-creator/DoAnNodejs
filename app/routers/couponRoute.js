@@ -1,9 +1,9 @@
 const express = require("express");
 const {
-  createCoupon,
-  getAllCoupons,
-  updateCoupon,
-  deleteCoupon,
+    createCoupon,
+    getAllCoupons,
+    updateCoupon,
+    deleteCoupon,
 } = require("../controllers/couponcontroller");
 const { authMiddleware, isAdmin } = require("../../middlewares/authMiddleware");
 const router = express.Router();
