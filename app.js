@@ -12,7 +12,14 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors)
+
+app.use(cors({
+    origin: 'http://localhost:3001',
+    credentials: true,
+    methods: 'GET, POST, PUT, DELETE, OPTIONS',
+    allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept'
+  }));
+  
 app.use("/public", express.static(__dirname + "/public"));
 app.use(cookieParser());
 app.use(bodyParser.json());

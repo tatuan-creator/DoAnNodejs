@@ -40,7 +40,7 @@ const loginUser = asyncHandler(async (req, res) => {
             firstName: findUser?.firstName,
             lastName: findUser?.lastName,
             email: findUser?.email,
-            mobile: findUser?.mobile,
+            role: findUser?.role,
             token: generateToken(findUser?._id),
         });
     } else {
@@ -51,33 +51,42 @@ const loginUser = asyncHandler(async (req, res) => {
 
 const loginAdmin = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
-    const findAdmin = await User.findOne({ email });
-    if (findAdmin.role !== "admin") throw new Error("Not Authorised");
-    if (findAdmin && (await findAdmin.isPasswordMatched(password))) {
-      const refreshToken = await generateRefreshToken(findAdmin?._id);
-      const updateuser = await User.findByIdAndUpdate(
-        findAdmin.id,
-        {
-          refreshToken: refreshToken,
-        },
-        { new: true }
-      );
-      res.cookie("refreshToken", refreshToken, {
-        httpOnly: true,
-        maxAge: 72 * 60 * 60 * 1000,
-      });
-      res.json({
-        _id: findAdmin?._id,
-        firstname: findAdmin?.firstname,
-        lastname: findAdmin?.lastname,
-        email: findAdmin?.email,
-        mobile: findAdmin?.mobile,
-        token: generateToken(findAdmin?._id),
-      });
-    } else {
-      throw new Error("Invalid Credentials");
+
+    // Tìm user theo email
+    const user = await User.findOne({ email });
+
+    // Kiểm tra user có phải là admin không
+    if (!user || user.role !== 'admin') {
+        throw new Error('Not authorized');
     }
-  });
+
+    // Kiểm tra password
+    const isMatched = await user.isPasswordMatched(password);
+    if (!isMatched) {
+        throw new Error('Invalid credentials');
+    }
+
+    // Tạo refreshToken và cập nhật vào database
+    const refreshToken = await generateRefreshToken(user._id);
+    await User.findByIdAndUpdate(user._id, { refreshToken });
+
+    // Set cookie refreshToken vào response
+    res.cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        maxAge: 72 * 60 * 60 * 1000, // 72 hours
+    });
+
+    // Trả về thông tin user và access token
+    res.json({
+        _id: user._id,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        email: user.email,
+        role: user.role,
+        token: generateToken(user._id),
+    });
+});
+
 
 // handle refresh token
 const handleRefreshToken = asyncHandler(async (req, res) => {
